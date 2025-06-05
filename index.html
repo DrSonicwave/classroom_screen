@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Classroom Screen</title>
+    <style>
+        /* CSS Variables for consistent theming */
+        :root {
+            --primary-blue: 210 60% 65%;
+            --light-blue: 210 40% 95%;
+            --dark-blue: 210 80% 45%;
+            --white: 0 0% 100%;
+            --light-gray: 210 11% 98%;
+            --medium-gray: 210 8% 85%;
+            --dark-gray: 210 10% 40%;
+            --success-green: 120 60% 50%;
+            --warning-red: 0 60% 60%;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+            --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: hsl(var(--light-gray));
+            color: hsl(var(--dark-gray));
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, hsl(var(--primary-blue)), hsl(var(--dark-blue)));
+            color: hsl(var(--white));
+            padding: 1rem 2rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        /* Main container */
+        .container {
+            flex: 1;
+            padding: 2rem;
+            display: flex;
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Individual sections */
+        .section {
+            background: hsl(var(--white));
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            flex: 1;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .section h2 {
+            color: hsl(var(--dark-blue));
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+            border-bottom: 2px solid hsl(var(--light-blue));
+            padding-bottom: 0.5rem;
+        }
+
+        /* Timer Section */
+        .timer-display {
+            font-size: 4rem;
+            font-weight: bold;
+            text-align: center;
+            color: hsl(var(--dark-blue));
+            margin: 2rem 0;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 2px;
+        }
+
+        .timer-inputs {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .input-group label {
+            font-weight: 500;
+            color: hsl(var(--dark-gray));
+            font-size: 0.9rem;
+        }
+
+        .input-group input {
+            width: 80px;
+            padding: 0.5rem;
+            border: 2px solid hsl(var(--medium-gray));
+            border-radius: calc(var(--border-radius) / 2);
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: hsl(var(--primary-blue));
+            box-shadow: 0 0 0 3px hsla(var(--primary-blue), 0.1);
+        }
+
+        .timer-controls {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: calc(var(--border-radius) / 2);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-width: 100px;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-primary {
+            background-color: hsl(var(--success-green));
+            color: hsl(var(--white));
+        }
+
+        .btn-secondary {
+            background-color: hsl(var(--primary-blue));
+            color: hsl(var(--white));
+        }
+
+        .btn-danger {
+            background-color: hsl(var(--warning-red));
+            color: hsl(var(--white));
+        }
+
+        /* Picker Section */
+        .picker-input {
+            margin-bottom: 1.5rem;
+        }
+
+        .picker-input label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: hsl(var(--dark-gray));
+        }
+
+        .picker-input textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid hsl(var(--medium-gray));
+            border-radius: calc(var(--border-radius) / 2);
+            resize: vertical;
+            min-height: 100px;
+            font-family: var(--font-family);
+            font-size: 1rem;
+        }
+
+        .picker-input textarea:focus {
+            outline: none;
+            border-color: hsl(var(--primary-blue));
+            box-shadow: 0 0 0 3px hsla(var(--primary-blue), 0.1);
+        }
+
+        .picker-result {
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background-color: hsl(var(--light-blue));
+            border-radius: calc(var(--border-radius) / 2);
+            text-align: center;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: hsl(var(--dark-blue));
+        }
+
+        .picker-log {
+            flex: 1;
+            border: 1px solid hsl(var(--medium-gray));
+            border-radius: calc(var(--border-radius) / 2);
+            padding: 1rem;
+            background-color: hsl(var(--light-gray));
+            overflow-y: auto;
+            max-height: 200px;
+        }
+
+        .picker-log h4 {
+            margin-bottom: 0.5rem;
+            color: hsl(var(--dark-blue));
+        }
+
+        .picked-name {
+            background-color: hsl(var(--white));
+            padding: 0.25rem 0.5rem;
+            margin: 0.25rem;
+            border-radius: calc(var(--border-radius) / 4);
+            display: inline-block;
+            font-size: 0.9rem;
+            border: 1px solid hsl(var(--medium-gray));
+        }
+
+        /* Memo Section */
+        .memo-textarea {
+            flex: 1;
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid hsl(var(--medium-gray));
+            border-radius: calc(var(--border-radius) / 2);
+            resize: none;
+            font-family: var(--font-family);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .memo-textarea:focus {
+            outline: none;
+            border-color: hsl(var(--primary-blue));
+            box-shadow: 0 0 0 3px hsla(var(--primary-blue), 0.1);
+        }
+
+        .memo-status {
+            margin-top: 1rem;
+            text-align: right;
+            font-size: 0.85rem;
+            color: hsl(var(--dark-gray));
+            opacity: 0.7;
+        }
+
+        /* Flash animation for timer alert */
+        @keyframes flash {
+            0%, 100% { background-color: hsl(var(--light-gray)); }
+            50% { background-color: hsl(var(--warning-red)); }
+        }
+
+        .flash {
+            animation: flash 0.5s ease-in-out 6;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                padding: 1rem;
+                gap: 1rem;
+            }
+
+            .section {
+                padding: 1.5rem;
+                min-height: auto;
+            }
+
+            .timer-display {
+                font-size: 3rem;
+                margin: 1rem 0;
+            }
+
+            .timer-inputs {
+                gap: 0.5rem;
+            }
+
+            .timer-controls {
+                gap: 0.5rem;
+            }
+
+            .btn {
+                padding: 0.5rem 1rem;
+                min-width: 80px;
+                font-size: 0.9rem;
+            }
+
+            .header {
+                padding: 1rem;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .timer-display {
+                font-size: 2.5rem;
+            }
+
+            .input-group input {
+                width: 60px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <h1>My Classroom Screen</h1>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Countdown Timer Section -->
+        <div class="section">
+            <h2>⏰ Countdown Timer</h2>
+            
+            <div class="timer-display" id="timerDisplay">00:00</div>
+            
+            <div class="timer-inputs">
+                <div class="input-group">
+                    <label for="minutesInput">Minutes</label>
+                    <input type="number" id="minutesInput" min="0" max="99" value="5">
+                </div>
+                <div class="input-group">
+                    <label for="secondsInput">Seconds</label>
+                    <input type="number" id="secondsInput" min="0" max="59" value="0">
+                </div>
+            </div>
+            
+            <div class="timer-controls">
+                <button class="btn btn-primary" id="startBtn">Start</button>
+                <button class="btn btn-secondary" id="pauseBtn" disabled>Pause</button>
+                <button class="btn btn-danger" id="resetBtn">Reset</button>
+            </div>
+        </div>
+
+        <!-- Random Participant Picker Section -->
+        <div class="section">
+            <h2>🎲 Random Picker</h2>
+            
+            <div class="picker-input">
+                <label for="namesInput">Enter names (comma-separated):</label>
+                <textarea 
+                    id="namesInput" 
+                    placeholder="John, Sarah, Mike, Emily, David, Lisa..."
+                ></textarea>
+            </div>
+            
+            <button class="btn btn-primary" id="pickBtn">Pick Random Name!</button>
+            
+            <div class="picker-result" id="pickerResult">
+                Click "Pick Random Name!" to select someone
+            </div>
+            
+            <div class="picker-log">
+                <h4>Previously Picked:</h4>
+                <div id="pickedLog"></div>
+                <button class="btn btn-secondary" id="resetPickerBtn" style="margin-top: 1rem; width: 100%;">Reset List</button>
+            </div>
+        </div>
+
+        <!-- Memo Board Section -->
+        <div class="section">
+            <h2>📝 Memo Board</h2>
+            
+            <textarea 
+                class="memo-textarea" 
+                id="memoTextarea" 
+                placeholder="Type your classroom notes here... They will be automatically saved."
+            ></textarea>
+            
+            <div class="memo-status" id="memoStatus">Ready</div>
+        </div>
+    </div>
+
+    <script>
+        // Timer functionality
+        class CountdownTimer {
+            constructor() {
+                this.display = document.getElementById('timerDisplay');
+                this.minutesInput = document.getElementById('minutesInput');
+                this.secondsInput = document.getElementById('secondsInput');
+                this.startBtn = document.getElementById('startBtn');
+                this.pauseBtn = document.getElementById('pauseBtn');
+                this.resetBtn = document.getElementById('resetBtn');
+                
+                this.totalSeconds = 0;
+                this.remainingSeconds = 0;
+                this.isRunning = false;
+                this.intervalId = null;
+                
+                this.initializeEventListeners();
+                this.updateDisplay();
+            }
+            
+            initializeEventListeners() {
+                this.startBtn.addEventListener('click', () => this.start());
+                this.pauseBtn.addEventListener('click', () => this.pause());
+                this.resetBtn.addEventListener('click', () => this.reset());
+                
+                // Update timer when inputs change
+                this.minutesInput.addEventListener('input', () => this.updateFromInputs());
+                this.secondsInput.addEventListener('input', () => this.updateFromInputs());
+            }
+            
+            updateFromInputs() {
+                if (!this.isRunning) {
+                    const minutes = parseInt(this.minutesInput.value) || 0;
+                    const seconds = parseInt(this.secondsInput.value) || 0;
+                    this.totalSeconds = minutes * 60 + seconds;
+                    this.remainingSeconds = this.totalSeconds;
+                    this.updateDisplay();
+                }
+            }
+            
+            start() {
+                if (!this.isRunning) {
+                    if (this.remainingSeconds === 0) {
+                        this.updateFromInputs();
+                    }
+                    
+                    if (this.remainingSeconds > 0) {
+                        this.isRunning = true;
+                        this.intervalId = setInterval(() => this.tick(), 1000);
+                        this.updateButtons();
+                    }
+                }
+            }
+            
+            pause() {
+                if (this.isRunning) {
+                    this.isRunning = false;
+                    clearInterval(this.intervalId);
+                    this.updateButtons();
+                }
+            }
+            
+            reset() {
+                this.pause();
+                this.updateFromInputs();
+                this.updateButtons();
+            }
+            
+            tick() {
+                this.remainingSeconds--;
+                this.updateDisplay();
+                
+                if (this.remainingSeconds <= 0) {
+                    this.pause();
+                    this.onTimerComplete();
+                }
+            }
+            
+            updateDisplay() {
+                const minutes = Math.floor(this.remainingSeconds / 60);
+                const seconds = this.remainingSeconds % 60;
+                this.display.textContent = 
+                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
+            
+            updateButtons() {
+                this.startBtn.disabled = this.isRunning;
+                this.pauseBtn.disabled = !this.isRunning;
+            }
+            
+            onTimerComplete() {
+                // Flash the background
+                document.body.classList.add('flash');
+                setTimeout(() => {
+                    document.body.classList.remove('flash');
+                }, 3000);
+                
+                // Play beep sound using Web Audio API
+                this.playBeep();
+            }
+            
+            playBeep() {
+                try {
+                    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    
+                    oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+                    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+                    
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + 0.5);
+                } catch (error) {
+                    console.log('Audio not supported or blocked by browser');
+                }
+            }
+        }
+        
+        // Random Participant Picker functionality
+        class ParticipantPicker {
+            constructor() {
+                this.namesInput = document.getElementById('namesInput');
+                this.pickBtn = document.getElementById('pickBtn');
+                this.pickerResult = document.getElementById('pickerResult');
+                this.pickedLog = document.getElementById('pickedLog');
+                this.resetPickerBtn = document.getElementById('resetPickerBtn');
+                
+                this.allNames = [];
+                this.availableNames = [];
+                this.pickedNames = [];
+                
+                this.initializeEventListeners();
+            }
+            
+            initializeEventListeners() {
+                this.pickBtn.addEventListener('click', () => this.pickRandomName());
+                this.resetPickerBtn.addEventListener('click', () => this.resetPicker());
+                this.namesInput.addEventListener('input', () => this.updateNamesList());
+            }
+            
+            updateNamesList() {
+                const input = this.namesInput.value.trim();
+                if (input) {
+                    this.allNames = input.split(',')
+                        .map(name => name.trim())
+                        .filter(name => name.length > 0);
+                    this.availableNames = [...this.allNames];
+                    this.pickedNames = [];
+                    this.updatePickedLog();
+                } else {
+                    this.allNames = [];
+                    this.availableNames = [];
+                    this.pickedNames = [];
+                    this.updatePickedLog();
+                }
+            }
+            
+            pickRandomName() {
+                if (this.allNames.length === 0) {
+                    this.pickerResult.textContent = 'Please enter some names first!';
+                    return;
+                }
+                
+                // Pick from all names (allowing duplicates)
+                const randomIndex = Math.floor(Math.random() * this.allNames.length);
+                const pickedName = this.allNames[randomIndex];
+                
+                // Add to picked list (duplicates allowed)
+                this.pickedNames.push(pickedName);
+                
+                // Update display
+                this.pickerResult.textContent = `🎯 ${pickedName}`;
+                this.updatePickedLog();
+            }
+            
+            resetPicker() {
+                this.availableNames = [...this.allNames];
+                this.pickedNames = [];
+                this.pickerResult.textContent = 'List reset! Click "Pick Random Name!" to select someone';
+                this.updatePickedLog();
+            }
+            
+            updatePickedLog() {
+                if (this.pickedNames.length === 0) {
+                    this.pickedLog.innerHTML = '<em>No names picked yet</em>';
+                } else {
+                    this.pickedLog.innerHTML = this.pickedNames
+                        .map(name => `<span class="picked-name">${name}</span>`)
+                        .join(' ');
+                }
+            }
+        }
+        
+        // Memo Board functionality
+        class MemoBoard {
+            constructor() {
+                this.memoTextarea = document.getElementById('memoTextarea');
+                this.memoStatus = document.getElementById('memoStatus');
+                
+                this.saveTimeout = null;
+                this.hasUnsavedChanges = false;
+                
+                this.initializeEventListeners();
+                this.loadMemo();
+            }
+            
+            initializeEventListeners() {
+                this.memoTextarea.addEventListener('input', () => {
+                    this.hasUnsavedChanges = true;
+                    this.updateStatus('Typing...');
+                    this.debounceSave();
+                });
+            }
+            
+            debounceSave() {
+                // Clear existing timeout
+                if (this.saveTimeout) {
+                    clearTimeout(this.saveTimeout);
+                }
+                
+                // Set new timeout for auto-save (2 seconds after user stops typing)
+                this.saveTimeout = setTimeout(() => {
+                    this.saveMemo();
+                }, 2000);
+            }
+            
+            saveMemo() {
+                try {
+                    localStorage.setItem('classroomMemo', this.memoTextarea.value);
+                    this.hasUnsavedChanges = false;
+                    this.updateStatus('Saved automatically');
+                    
+                    // Clear status after 3 seconds
+                    setTimeout(() => {
+                        if (!this.hasUnsavedChanges) {
+                            this.updateStatus('Ready');
+                        }
+                    }, 3000);
+                } catch (error) {
+                    this.updateStatus('Error saving');
+                    console.error('Failed to save memo:', error);
+                }
+            }
+            
+            loadMemo() {
+                try {
+                    const savedMemo = localStorage.getItem('classroomMemo');
+                    if (savedMemo) {
+                        this.memoTextarea.value = savedMemo;
+                        this.updateStatus('Loaded from storage');
+                        
+                        // Clear status after 3 seconds
+                        setTimeout(() => {
+                            this.updateStatus('Ready');
+                        }, 3000);
+                    }
+                } catch (error) {
+                    this.updateStatus('Error loading');
+                    console.error('Failed to load memo:', error);
+                }
+            }
+            
+            updateStatus(message) {
+                this.memoStatus.textContent = message;
+            }
+        }
+        
+        // Initialize all components when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            const timer = new CountdownTimer();
+            const picker = new ParticipantPicker();
+            const memo = new MemoBoard();
+            
+            // Save memo when page is about to unload (as backup)
+            window.addEventListener('beforeunload', function() {
+                if (memo.hasUnsavedChanges) {
+                    memo.saveMemo();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
